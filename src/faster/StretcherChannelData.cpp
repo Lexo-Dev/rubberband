@@ -28,9 +28,13 @@
 
 #include <algorithm>
 
-namespace RubberBand 
+// @todo Understand why min/max is not stable
+#undef max
+#undef min
+
+namespace RubberBand
 {
-      
+
 R2Stretcher::ChannelData::ChannelData(size_t windowSize,
                                       size_t fftSize,
                                       size_t outbufSize)
@@ -138,7 +142,7 @@ R2Stretcher::ChannelData::setSizes(size_t windowSize,
                 ffts[fftSize]->initFloat();
             }
         }
-        
+
         fft = ffts[fftSize];
 
         v_zero(fltbuf, maxSize);
@@ -186,7 +190,7 @@ R2Stretcher::ChannelData::setSizes(size_t windowSize,
         (windowAccumulator, oldMax, maxSize);
 
     interpolatorScale = 0;
-    
+
     //!!! and resampler?
 
     if (ffts.find(fftSize) == ffts.end()) {
@@ -197,7 +201,7 @@ R2Stretcher::ChannelData::setSizes(size_t windowSize,
             ffts[fftSize]->initFloat();
         }
     }
-    
+
     fft = ffts[fftSize];
 }
 
@@ -269,7 +273,7 @@ R2Stretcher::ChannelData::reset()
 
     // Avoid dividing opening sample (which will be discarded anyway) by zero
     windowAccumulator[0] = 1.f;
-    
+
     accumulatorFill = 0;
     prevIncrement = 0;
     chunkCount = 0;
